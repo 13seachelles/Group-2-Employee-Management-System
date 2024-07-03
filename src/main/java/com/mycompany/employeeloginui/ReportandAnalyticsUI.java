@@ -16,14 +16,14 @@ public class ReportandAnalyticsUI {
     private Connection connection;
             
     public ReportandAnalyticsUI() {
-        // Establish the database connection
+      
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");           
         } catch (SQLException e) {
             System.out.println("Error while connecting to the database: " + e.getMessage());
         }
 
-        // Create the main frame
+        //  main frame
         JFrame frame = new JFrame("Report and Analytics");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -31,7 +31,6 @@ public class ReportandAnalyticsUI {
 
         Color lightBlue = new Color(204, 204, 255);
 
-        // Create the panel that will contain the tabbed pane
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(lightBlue);
@@ -40,10 +39,10 @@ public class ReportandAnalyticsUI {
         label1.setFont(new Font("Sans Serif", Font.BOLD, 20));
         mainPanel.add(label1, BorderLayout.NORTH);
 
-        // Create a tabbed pane
+        //tabbed pane
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Create the Financial Performance tab
+        //Financial Performance tab
         String[] finperfcolumns = {"Type", "Revenue", "Profit", "ProfitMargin"};
         DefaultTableModel finperfModel = new DefaultTableModel(null, finperfcolumns);
         JTable financialperftable = new JTable(finperfModel);
@@ -62,11 +61,9 @@ public class ReportandAnalyticsUI {
 
         finperfPanel.add(finperfButtonPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Financial Performance", finperfPanel);
-
-        // Load financial performance data from the database
+        
         loadFinancialPerformanceData(finperfModel);
 
-        // Add action listeners for Financial Performance buttons
         finperfAddButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,8 +77,8 @@ public class ReportandAnalyticsUI {
                         return;
                     }
                 }
-                finperfModel.addRow(newData); // Add row to JTable
-                insertFinancialPerformanceData(newData); // Insert into database
+                finperfModel.addRow(newData); 
+                insertFinancialPerformanceData(newData); 
             }
         });
 
@@ -107,7 +104,7 @@ public class ReportandAnalyticsUI {
             }
         });
 
-        // Create the Sales tab
+        //Sales tab
         String[] salesColumns = {"Week", "TotalSales", "AveragePerf"};
         DefaultTableModel salesModel = new DefaultTableModel(null, salesColumns);
         JTable salesTable = new JTable(salesModel);
@@ -126,11 +123,9 @@ public class ReportandAnalyticsUI {
         
         salesPanel.add(salesButtonPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Sales", salesPanel);
-
-        // Load sales data from the database
+   
         loadSalesData(salesModel);
 
-        // Add action listeners for Sales buttons
         salesAddButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,8 +139,8 @@ public class ReportandAnalyticsUI {
                         return;
                     }
                 }
-                salesModel.addRow(newData); // Add row to JTable
-                insertSalesData(newData); // Insert into database
+                salesModel.addRow(newData); 
+                insertSalesData(newData); 
             }
         });
 
@@ -171,7 +166,7 @@ public class ReportandAnalyticsUI {
             }
         });
         
-        // Create the Employee Information tab
+        //Employee Information tab
         String[] empInfoColumns = {"TotalEmployees", "EGrowthRate", "ETurnoverRate", "EAverageTenure"};
         DefaultTableModel empInfoModel = new DefaultTableModel(null, empInfoColumns);
         JTable empInfoTable = new JTable(empInfoModel);
@@ -191,10 +186,8 @@ public class ReportandAnalyticsUI {
         empInfoPanel.add(empInfoButtonPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Employee Information", empInfoPanel);
 
-        // Load employee information data from the database
         loadEmployeeInfoData(empInfoModel);
 
-        // Add action listeners for Employee Information buttons
         empInfoAddButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -208,8 +201,8 @@ public class ReportandAnalyticsUI {
                         return;
                     }
                 }
-                empInfoModel.addRow(newData); // Add row to JTable
-                insertEmployeeInfoData(newData); // Insert into database
+                empInfoModel.addRow(newData); 
+                insertEmployeeInfoData(newData); 
             }
         });
 
@@ -226,7 +219,7 @@ public class ReportandAnalyticsUI {
                 }
             }
         });
-        
+  
         empInfoBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -240,7 +233,6 @@ public class ReportandAnalyticsUI {
         frame.setVisible(true);
     }
 
-    // Load financial performance data from the database into the JTable
     private void loadFinancialPerformanceData(DefaultTableModel model) {
         String query = "SELECT * FROM financialperformance_tbl";
 
@@ -259,7 +251,7 @@ public class ReportandAnalyticsUI {
         }
     }
 
-    // Method to insert new data into the FinancialPerformance table
+    //insert new data into the financialperformance_tbl
     private void insertFinancialPerformanceData(String[] data) {
         String query = "INSERT INTO financialperformance_tbl (Type, Revenue, Profit, ProfitMargin) VALUES (?, ?, ?, ?)";
 
@@ -273,7 +265,7 @@ public class ReportandAnalyticsUI {
         }
     }
 
-    // Method to delete a row from the FinancialPerformance table based on Type
+    //delete row
     private void deleteFinancialPerformanceData(String type) {
         String query = "DELETE FROM financialperformance_tbl WHERE Type = ?";
 
@@ -285,7 +277,6 @@ public class ReportandAnalyticsUI {
         }
     }
 
-    // Load sales data from the database into the JTable
     private void loadSalesData(DefaultTableModel model) {
         String query = "SELECT * FROM sales_tbl";
 
@@ -303,7 +294,7 @@ public class ReportandAnalyticsUI {
         }
     }
 
-    // Method to insert new data into the Sales table
+    // insert new data into the sales_tbl
     private void insertSalesData(String[] data) {
         String query = "INSERT INTO sales_tbl (Week, TotalSales, AveragePerf) VALUES (?, ?, ?)";
 
@@ -316,8 +307,7 @@ public class ReportandAnalyticsUI {
             System.out.println("Error while inserting Sales data: " + e.getMessage());
         }
     }
-
-    // Method to delete a row from the Sales table based on Week
+    //delete row
     private void deleteSalesData(String week) {
         String query = "DELETE FROM sales_tbl WHERE Week = ?";
 
@@ -329,7 +319,6 @@ public class ReportandAnalyticsUI {
         }
     }
 
-    // Load employee information data from the database into the JTable
     private void loadEmployeeInfoData(DefaultTableModel model) {
         String query = "SELECT * FROM employeeinfo_tbl";
 
@@ -348,7 +337,7 @@ public class ReportandAnalyticsUI {
         }
     }
 
-    // Method to insert new data into the EmployeeInfo table
+    //insert new data into the employeeinfo_tbl
     private void insertEmployeeInfoData(String[] data) {
         String query = "INSERT INTO employeeinfo_tbl (TotalEmployees, EGrowthRate, ETurnoverRate, EAverageTenure) VALUES (?, ?, ?, ?)";
 
@@ -362,7 +351,7 @@ public class ReportandAnalyticsUI {
         }
     }
 
-    // Method to delete a row from the EmployeeInfo table based on TotalEmployees
+    //delete row 
     private void deleteEmployeeInfoData(String totalEmployees) {
         String query = "DELETE FROM employeeinfo_tbl WHERE TotalEmployees = ?";
 
