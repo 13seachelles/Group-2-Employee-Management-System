@@ -1,3 +1,4 @@
+
 package main.java.com.mycompany.employeeloginui;
 
 import java.awt.Color;
@@ -33,6 +34,7 @@ public class Listtt{
         } catch (SQLException e) {
             System.out.println("Error while connecting to the database: " + e.getMessage());
         }
+
 
         JFrame frame = new JFrame();
         JTable table = new JTable();
@@ -96,6 +98,7 @@ public class Listtt{
         btnBack.setBounds(650,500,100,25);
         btnNext.setBounds(750, 500, 100, 25);
         
+
         JScrollPane pane = new JScrollPane(table);
         pane.setBounds(0, 0, 880, 200);
 
@@ -117,6 +120,8 @@ public class Listtt{
         frame.add(textEmail);
         frame.add(textContactNumber);
 
+       
+
         frame.setSize(900, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Employee List Record");
@@ -125,26 +130,21 @@ public class Listtt{
         frame.add(btnDelete);
         frame.add(btnBack);
         frame.add(btnNext);
-        
-        loadEmployeeRecords(model);
 
+        Object[] row = new Object[6];
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                String[] data = new String[6];
-                data[0] = textEmployeeName.getText();
-                data[1] = textAge.getText();
-                data[2] = textBirthdate.getText();
-                data[3] = textAddress.getText();
-                data[4] = textEmail.getText();
-                data[5] = textContactNumber.getText();
+                row[0] = textEmployeeName.getText();
+                row[1] = textAge.getText();
+                row[2] = textBirthdate.getText();
+                row[3] = textAddress.getText();
+                row[4] = textEmail.getText();
+                row[5] = textContactNumber.getText();
 
-                // Insert the new record into the database
-                insertEmployeeRecord(data);
+                model.addRow(row);
 
-                // Add the new record to the table model
-                model.addRow(data);
             }
         });
         
@@ -159,48 +159,42 @@ public class Listtt{
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 int i = table.getSelectedRow();
                 if (i >= 0) {
-                    String employeeName = (String) model.getValueAt(i, 0);
-
-                    deleteEmployeeRecord(employeeName);
-  
                     model.removeRow(i);
                 } else {
-                    System.out.println("Delete Error: No row selected");
+                    System.out.println("Deleted!!");
                 }
             }
         });
-        
         frame.setSize(900, 600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-    
-    private void loadEmployeeRecords(DefaultTableModel model) {
+    private void EmployeeRecord (DefaultTableModel model) {
         String query = "SELECT * FROM tbl_employeerecord";
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                String employeename = resultSet.getString("employeename");
-                String birthdate = resultSet.getString("birthdate");
-                String age = resultSet.getString("age");
-                String address = resultSet.getString("address");
-                String contactnum = resultSet.getString("contactnum");
-                String email = resultSet.getString("email");
-
-                model.addRow(new String[]{employeename, age, birthdate, address, email, contactnum});
+                String employeename = resultSet.getString("Employee Name");
+                String birthdate = resultSet.getString("Birthdate");
+                String age = resultSet.getString("Age");
+                String address = resultSet.getString("Address");
+                String contactnum = resultSet.getString("Contact Number");
+                String email = resultSet.getString("Email");
+                
+                model.addRow(new String[]{employeename, birthdate, age, address,contactnum, email});
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("Error while loading Employee List Record: " + e.getMessage());
         }
     }
-    
     private void insertEmployeeRecord(String[] data) {
-        String query = "INSERT INTO tbl_employeerecord (employeename, age, birthdate, address, email, contactnum) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO tbl_employeerecord (employeename, birthdate, age, address,contactnum, email) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (int i = 0; i < data.length; i++) {
@@ -208,19 +202,7 @@ public class Listtt{
             }
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
-    
-    private void deleteEmployeeRecord(String employeeName) {
-        String query = "DELETE FROM tbl_employeerecord WHERE employeename = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, employeeName);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("Error while inserting Employee Information data: " + e.getMessage());
         }
     }
 }
-
