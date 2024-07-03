@@ -29,7 +29,7 @@ public class Listtt{
         model.setColumnIdentifiers(columns);
         table.setModel(model);
 
-        table.setBackground(Color.blue);
+        table.setBackground(Color.gray);
         table.setForeground(Color.white);
         Font font = new Font("Times new roman", 1, 24);
         table.setRowHeight(40);
@@ -41,47 +41,45 @@ public class Listtt{
         JTextField textEmail = new JTextField();
         JTextField textContactNumber = new JTextField();
 
-        textEmployeeName.setBounds(220, 220, 200, 25);
+        textEmployeeName.setBounds(220, 230, 200, 35);
         textEmployeeName.setFont(new Font("Times new roman", Font.BOLD, 14));
-        textAge.setBounds(220, 350, 200, 25);
+        textAge.setBounds(220, 350, 200, 35);
         textAge.setFont(new Font("Times new roman", Font.BOLD, 14));
-        textBirthdate.setBounds(220, 280, 200, 25);
+        textBirthdate.setBounds(220, 290, 200, 35);
         textBirthdate.setFont(new Font("Times new roman", Font.BOLD, 14));
-        textAddress.setBounds(620, 220, 200, 25);
+        textAddress.setBounds(620, 230, 200, 35);
         textAddress.setFont(new Font("Times new roman", Font.BOLD, 14));
-        textEmail.setBounds(620, 350, 200, 25);
+        textEmail.setBounds(620, 350, 200, 35);
         textEmail.setFont(new Font("Times new roman", Font.BOLD, 14));
-        textContactNumber.setBounds(620, 280, 200, 25);
+        textContactNumber.setBounds(620, 290, 200, 35);
         textContactNumber.setFont(new Font("Times new roman", Font.BOLD, 14));
 
-        JLabel lblEmployeeName = new JLabel("EmployeeName");
-        lblEmployeeName.setBounds(50, 230, 200, 25);
+        JLabel lblEmployeeName = new JLabel("Employee Name");
+        lblEmployeeName.setBounds(50, 230, 200, 35);
         lblEmployeeName.setFont(new Font("Times new  roman", Font.PLAIN, 14));
         JLabel lblAge = new JLabel("Age");
-        lblAge.setBounds(50, 350, 100, 25);
+        lblAge.setBounds(50, 350, 100, 35);
         lblAge.setFont(new Font("Times new  roman", Font.PLAIN, 14));
         JLabel lblBirthdate = new JLabel("Birthdate");
-        lblBirthdate.setBounds(50, 290, 100, 25);
+        lblBirthdate.setBounds(50, 290, 100, 35);
         lblBirthdate.setFont(new Font("Times new  roman", Font.PLAIN, 14));
         JLabel lblAddress = new JLabel("Address");
-        lblAddress.setBounds(500, 230, 150, 25);
+        lblAddress.setBounds(500, 230, 150, 35);
         lblAddress.setFont(new Font("Times new  roman", Font.PLAIN, 14));
         JLabel lblEmail = new JLabel("Email");
-        lblEmail.setBounds(500, 350,200, 25);
+        lblEmail.setBounds(500, 350,200, 35);
         lblEmail.setFont(new Font("Times new  roman", Font.PLAIN, 14));
-        JLabel lblContactNumber = new JLabel("ContactNumber");
-        lblContactNumber.setBounds(500, 290, 100, 25);
+        JLabel lblContactNumber = new JLabel("Contact Number");
+        lblContactNumber.setBounds(500, 290, 100, 35);
         lblContactNumber.setFont(new Font("Times new  roman", Font.PLAIN, 14));
 
         JButton btnAdd = new JButton("Add");
         JButton btnDelete = new JButton("Delete");
         JButton btnBack = new JButton("Back");
-        JButton btnNext = new JButton("Next");
         
-        btnAdd.setBounds(50, 500, 100, 25);
-        btnDelete.setBounds(225, 500, 100, 25);
-        btnBack.setBounds(650,500,100,25);
-        btnNext.setBounds(750, 500, 100, 25);
+        btnAdd.setBounds(200, 500, 100, 45);
+        btnDelete.setBounds(430, 500, 100, 45);
+        btnBack.setBounds(650,500,100,45);
         
 
         JScrollPane pane = new JScrollPane(table);
@@ -107,7 +105,6 @@ public class Listtt{
         frame.add(btnAdd);
         frame.add(btnDelete);
         frame.add(btnBack);
-        frame.add(btnNext);
        
 
         frame.setSize(900, 600);

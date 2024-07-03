@@ -17,7 +17,7 @@ public class MainMenu extends JFrame{
     private JFrame Acc = new JFrame("Employee Management System");
     private JLabel label1, label2;
     private JPanel panel1;
-    private JButton BTN2,BTN3,BTN4;
+    private JButton BTN1,BTN2,BTN3,BTN4;
     
     MainMenu(){
         //frame
@@ -31,7 +31,17 @@ public class MainMenu extends JFrame{
         label1.setFont(new Font("Arial Rounded MT Bold", Font.BOLD,60));
         label1.setBounds(270, 55, 500, 100);
        
-
+        BTN1 = new JButton("Review");
+        BTN1.setBounds(300,180,300,50);
+        BTN1.setBackground(Color.WHITE);
+        BTN1.setFont(new Font("Arial", Font.BOLD,20));
+        BTN1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Acc.dispose();
+                new EmployeeReview();
+                
+            }
+        });
         
         BTN2 = new JButton("Employee Dashboard");
         BTN2.setBounds(300,260,300,50);
@@ -84,6 +94,7 @@ public class MainMenu extends JFrame{
         panel1.add(label2);
                 
         Acc.add(label1);
+        Acc.add(BTN1);
         Acc.add(BTN2);
         Acc.add(BTN3);
         Acc.add(BTN4);

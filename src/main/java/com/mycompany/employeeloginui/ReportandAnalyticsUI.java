@@ -55,8 +55,10 @@ public class ReportandAnalyticsUI {
         JPanel finperfButtonPanel = new JPanel();
         JButton finperfAddButton = new JButton("Add");
         JButton finperfDeleteButton = new JButton("Delete");
+        JButton finperfBackButton = new JButton("Back");
         finperfButtonPanel.add(finperfAddButton);
         finperfButtonPanel.add(finperfDeleteButton);
+        finperfButtonPanel.add(finperfBackButton);
 
         finperfPanel.add(finperfButtonPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Financial Performance", finperfPanel);
@@ -96,6 +98,14 @@ public class ReportandAnalyticsUI {
                 }
             }
         });
+        
+        finperfBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new MainMenu();
+            }
+        });
 
         // Create the Sales tab
         String[] salesColumns = {"Week", "TotalSales", "AveragePerf"};
@@ -109,9 +119,11 @@ public class ReportandAnalyticsUI {
         JPanel salesButtonPanel = new JPanel();
         JButton salesAddButton = new JButton("Add");
         JButton salesDeleteButton = new JButton("Delete");
+        JButton salesBackButton = new JButton("Back");
         salesButtonPanel.add(salesAddButton);
         salesButtonPanel.add(salesDeleteButton);
-
+        salesButtonPanel.add(salesBackButton);
+        
         salesPanel.add(salesButtonPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Sales", salesPanel);
 
@@ -150,7 +162,15 @@ public class ReportandAnalyticsUI {
                 }
             }
         });
-
+        
+        salesBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new MainMenu();
+            }
+        });
+        
         // Create the Employee Information tab
         String[] empInfoColumns = {"TotalEmployees", "EGrowthRate", "ETurnoverRate", "EAverageTenure"};
         DefaultTableModel empInfoModel = new DefaultTableModel(null, empInfoColumns);
@@ -163,8 +183,10 @@ public class ReportandAnalyticsUI {
         JPanel empInfoButtonPanel = new JPanel();
         JButton empInfoAddButton = new JButton("Add");
         JButton empInfoDeleteButton = new JButton("Delete");
+        JButton empInfoBackButton = new JButton("Back");
         empInfoButtonPanel.add(empInfoAddButton);
         empInfoButtonPanel.add(empInfoDeleteButton);
+        empInfoButtonPanel.add(empInfoBackButton);
 
         empInfoPanel.add(empInfoButtonPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Employee Information", empInfoPanel);
@@ -202,6 +224,14 @@ public class ReportandAnalyticsUI {
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please select a row to delete.");
                 }
+            }
+        });
+        
+        empInfoBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new MainMenu();
             }
         });
 
