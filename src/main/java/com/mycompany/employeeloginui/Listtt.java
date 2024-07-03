@@ -1,9 +1,7 @@
 
 package main.java.com.mycompany.employeeloginui;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Label;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -12,29 +10,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 
 public class Listtt{
     
     private Connection connection;
+    private boolean e;
             
     public Listtt(){
-        
-        // Establish the database connection
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");           
-        } catch (SQLException e) {
-            System.out.println("Error while connecting to the database: " + e.getMessage());
-        }
-
 
         JFrame frame = new JFrame();
         JTable table = new JTable();
@@ -119,32 +104,66 @@ public class Listtt{
         frame.add(textAddress);
         frame.add(textEmail);
         frame.add(textContactNumber);
-
+        frame.add(btnAdd);
+        frame.add(btnDelete);
+        frame.add(btnBack);
+        frame.add(btnNext);
        
 
         frame.setSize(900, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Employee List Record");
 
-        frame.add(btnAdd);
-        frame.add(btnDelete);
-        frame.add(btnBack);
-        frame.add(btnNext);
-
-        Object[] row = new Object[6];
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String employeeName = textEmployeeName.getText();
+                String age = textAge.getText();
+                String birthdate = textBirthdate.getText();
+                String address = textAddress.getText();
+                String email = textEmail.getText();
+                String contactNumber = textContactNumber.getText();
+                
+                try {
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");
+                    String query = "INSERT INTO tbl_employeerecord (EmployeeName, Age, Birthdate, Address, Email, ContactNumber) VALUES (?, ?, ?, ?, ?, ?)";
+                    PreparedStatement pst = conn.prepareStatement(query);
+                    pst.setString(1, employeeName);
+                    pst.setString(2, age);
+                    pst.setString(3, birthdate);
+                    pst.setString(4, address);
+                    pst.setString(5, email);
+                    pst.setString(6, contactNumber);
+                    pst.executeUpdate();
+                    
+                    model.addRow(new Object[]{employeeName, age, birthdate, address, email, contactNumber});
+                } catch (SQLException ex) {
+                    System.out.println(e);
+                }
+            }
+        });     
+             
 
-                row[0] = textEmployeeName.getText();
-                row[1] = textAge.getText();
-                row[2] = textBirthdate.getText();
-                row[3] = textAddress.getText();
-                row[4] = textEmail.getText();
-                row[5] = textContactNumber.getText();
-
-                model.addRow(row);
-
+        btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int i = table.getSelectedRow();
+                if (i >= 0) {
+                    String employeeName = model.getValueAt(i, 0).toString();
+                    try {
+                        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");
+                        String query = "DELETE FROM tbl_employeerecord WHERE EmployeeName = ?";
+                        PreparedStatement pst = conn.prepareStatement(query);
+                        pst.setString(1, employeeName);
+                        pst.executeUpdate();
+                        
+                        model.removeRow(i);
+                    } catch (SQLException ex) {
+                        System.out.println(e);
+                    }
+                } else {
+                    System.out.println("No row selected for deletion!");
+                }
             }
         });
         
@@ -155,54 +174,31 @@ public class Listtt{
             new EmployeeList();
             }
         });
-
-        btnDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                int i = table.getSelectedRow();
-                if (i >= 0) {
-                    model.removeRow(i);
-                } else {
-                    System.out.println("Deleted!!");
-                }
+        
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");
+            Statement st = conn.createStatement();
+            String query = "SELECT * FROM tbl_employeerecord";
+            ResultSet rs = st.executeQuery(query);
+           
+            while(rs.next()){
+                String employeename = rs.getString("EmployeeName");
+                String Age = rs.getString("Age");
+                String Birthdate = rs.getString("Birthdate");
+                String Address = rs.getString("Address");
+                String Email = rs.getString("Email");
+                String contactnum = rs.getString("ContactNumber");
+                
+                model.addRow(new Object[]{employeename, Age, Birthdate, Address,Email,contactnum});
             }
-        });
+        } catch (SQLException ex) {
+            System.out.println(e);
+        }
+        
         frame.setSize(900, 600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-    private void EmployeeRecord (DefaultTableModel model) {
-        String query = "SELECT * FROM tbl_employeerecord";
-
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-
-            while (resultSet.next()) {
-                String employeename = resultSet.getString("Employee Name");
-                String birthdate = resultSet.getString("Birthdate");
-                String age = resultSet.getString("Age");
-                String address = resultSet.getString("Address");
-                String contactnum = resultSet.getString("Contact Number");
-                String email = resultSet.getString("Email");
-                
-                model.addRow(new String[]{employeename, birthdate, age, address,contactnum, email});
-            }
-        } catch (SQLException e) {
-            System.out.println("Error while loading Employee List Record: " + e.getMessage());
-        }
-    }
-    private void insertEmployeeRecord(String[] data) {
-        String query = "INSERT INTO tbl_employeerecord (employeename, birthdate, age, address,contactnum, email) VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < data.length; i++) {
-                statement.setString(i + 1, data[i]);
-            }
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Error while inserting Employee Information data: " + e.getMessage());
-        }
-    }
 }
+             
