@@ -72,11 +72,11 @@ public class EmployeeList extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Frame.dispose();
-                new Listtt(); 
+                new Listtt();
             }
         });
         
-         try {
+        try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");
             Statement st = conn.createStatement();
             String query = "SELECT * FROM tbl_employee";

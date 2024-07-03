@@ -66,6 +66,7 @@ public class ReportandAnalyticsUI {
 
         // Add action listeners for Financial Performance buttons
         finperfAddButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String[] newData = new String[finperfcolumns.length];
                 for (int i = 0; i < finperfcolumns.length; i++) {
@@ -83,6 +84,7 @@ public class ReportandAnalyticsUI {
         });
 
         finperfDeleteButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = financialperftable.getSelectedRow();
                 if (selectedRow != -1) {
@@ -118,6 +120,7 @@ public class ReportandAnalyticsUI {
 
         // Add action listeners for Sales buttons
         salesAddButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String[] newData = new String[salesColumns.length];
                 for (int i = 0; i < salesColumns.length; i++) {
@@ -135,6 +138,7 @@ public class ReportandAnalyticsUI {
         });
 
         salesDeleteButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = salesTable.getSelectedRow();
                 if (selectedRow != -1) {
@@ -170,6 +174,7 @@ public class ReportandAnalyticsUI {
 
         // Add action listeners for Employee Information buttons
         empInfoAddButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String[] newData = new String[empInfoColumns.length];
                 for (int i = 0; i < empInfoColumns.length; i++) {
@@ -187,6 +192,7 @@ public class ReportandAnalyticsUI {
         });
 
         empInfoDeleteButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = empInfoTable.getSelectedRow();
                 if (selectedRow != -1) {
