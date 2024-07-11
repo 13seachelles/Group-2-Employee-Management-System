@@ -230,6 +230,7 @@ public class ReportandAnalyticsUI {
 
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
         frame.getContentPane().add(mainPanel);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

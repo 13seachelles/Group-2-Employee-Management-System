@@ -59,8 +59,8 @@ import java.awt.event.*;
                 String name = txtfldUsername.getText();
                 String employeeid = txtfldEmployeeID.getText();
                 String password = txtfldPassword.getText();
-                if (name.equals("admin")||name.equals("staff")
-                    && employeeid.equals("admin")||employeeid.equals("staff")
+                if (name.equals("admin")||name.equals("enzo")
+                    && employeeid.equals("admin")||employeeid.equals("obra001")
                         && password.equals("admin")||password.equals("staff")) {
                     f.dispose();
                     new MainMenu();
@@ -91,6 +91,7 @@ import java.awt.event.*;
         f.add(btnLogin);
         f.add(panel1);
 
+        f.setLocationRelativeTo(null);
         f.setVisible(true);
     }
      private void addPlaceholderBehavior(JTextField textField, String placeholder) {

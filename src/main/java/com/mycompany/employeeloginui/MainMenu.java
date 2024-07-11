@@ -100,7 +100,7 @@ public class MainMenu extends JFrame{
         Acc.add(BTN4);
         Acc.add(panel1);
         
-       
+        Acc.setLocationRelativeTo(null);
         Acc.setVisible(true);
         
     }

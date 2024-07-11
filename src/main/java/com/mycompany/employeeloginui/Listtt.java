@@ -134,6 +134,8 @@ public class Listtt{
                     pst.executeUpdate();
                     
                     model.addRow(new Object[]{employeeName, age, birthdate, address, email, contactNumber});
+                    
+                    JOptionPane.showMessageDialog(null, "Information Added Successfully!", "Add", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException ex) {
                     System.out.println(e);
                 }
@@ -155,11 +157,13 @@ public class Listtt{
                         pst.executeUpdate();
                         
                         model.removeRow(i);
+                        
+                        JOptionPane.showMessageDialog(null, "Information Deleted Successfully!", "Delete", JOptionPane.INFORMATION_MESSAGE);
                     } catch (SQLException ex) {
                         System.out.println(e);
                     }
                 } else {
-                    System.out.println("No row selected for deletion!");
+                    JOptionPane.showMessageDialog(null,"No row selected for deletion!");
                 }
             }
         });

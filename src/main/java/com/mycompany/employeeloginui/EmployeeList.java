@@ -97,6 +97,7 @@ public class EmployeeList extends JFrame {
 
         
         Frame.setVisible(true);
+        Frame.setLocationRelativeTo(null);
         Frame.setResizable(false);
     }
 

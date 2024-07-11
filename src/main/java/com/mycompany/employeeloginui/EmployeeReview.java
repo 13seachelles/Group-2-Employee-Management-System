@@ -5,12 +5,13 @@ package main.java.com.mycompany.employeeloginui;
  *
  * @author Jonalyn Ramos
  */
-
+import java.sql.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.Boolean.getBoolean;
 
 public class EmployeeReview {
 
@@ -19,24 +20,15 @@ public class EmployeeReview {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(700, 400);
 
-        // Adding "Request" column and sample requests
-        String[] columnNames = {"Request", "Name", "Department", "Weekly Task Status", "Rating", "Approved"};
-        Object[][] employeeData = {
-            {"Request for leave", "Matthew", "IT", "Done Early", "100%", "No"},
-            {"Request for budget increase", "Rachelle", "Marketing", "Done Early", "100%", "No"},
-            {"Request for training", "Vanessa", "Sales", "Done Early", "100%", "No"},
-            {"Request for new hires", "Jonalyn", "HR", "Done Early", "100%", "No"},
-            {"Request for bonus", "Enzo", "Finance", "Done Early", "100%", "No"},
-            {"Request for equipment upgrade", "Helaena", "Customer Service", "Done Early", "100%", "No"},
-        };
-
-        DefaultTableModel tableModel = new DefaultTableModel(employeeData, columnNames);
+        String[] columnNames = {"Employee ID","Request", "Name", "Department", "Weekly Task Status", "Rating", "Approved"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         JTable employeeTable = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(employeeTable);
 
         f.getContentPane().setBackground(Color.DARK_GRAY);
         tableScrollPane.getViewport().setBackground(Color.LIGHT_GRAY);
         employeeTable.setBackground(Color.LIGHT_GRAY);
+        
 
         JButton reviewButton = new JButton("Review");
         reviewButton.setBackground(Color.BLUE);
@@ -65,14 +57,15 @@ public class EmployeeReview {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = employeeTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    tableModel.setValueAt("Yes", selectedRow, 5); // Set the "Approved" column to "Yes"
+                    String employeeID = (String) employeeTable.getValueAt(selectedRow, 0);
+                    tableModel.setValueAt("Yes", selectedRow, 6); // Set the "Approved" column to "Yes"
+                    updateApprovalStatus(employeeID, true); // Update the approval status in the database
                 } else {
                     JOptionPane.showMessageDialog(f, "Please select a row first.");
                 }
             }
-        });
-
-        
+        });      
+                
         JButton backButton = new JButton("Back");
         backButton.setBackground(Color.BLUE);
         backButton.setForeground(Color.WHITE);
@@ -83,23 +76,61 @@ public class EmployeeReview {
                 new MainMenu();
             }
         });
-        
-        
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(reviewButton);
         buttonPanel.add(approveButton);
         buttonPanel.add(backButton);
-        
+
         f.add(tableScrollPane, BorderLayout.CENTER);
         f.add(buttonPanel, BorderLayout.SOUTH);
+        f.setLocationRelativeTo(null);
         f.setVisible(true);
+        
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");
+            Statement st = conn.createStatement();
+            String query = "SELECT * FROM tbl_employeereview";
+            ResultSet rs = st.executeQuery(query);
+           
+            while(rs.next()){
+                String employeeID = rs.getString("employeeID");
+                String request = rs.getString("request");
+                String name = rs.getString("name");
+                String department = rs.getString("department");
+                String weeklystat = rs.getString("weeklystat");
+                String rating = rs.getString("rating");
+                boolean approveBoolean = rs.getBoolean("approve");
+                String approve = approveBoolean ? "Yes" : "No";
+                
+                tableModel.addRow(new Object[]{employeeID, request, name, department,weeklystat,rating,approve});
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+    private void updateApprovalStatus(String employeeID, boolean approve) {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");
+            String updateQuery = "UPDATE tbl_employeereview SET approve = ? WHERE employeeID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(updateQuery);
+            pstmt.setBoolean(1, approve);
+            pstmt.setString(2, employeeID);
+
+            pstmt.executeUpdate();
+            pstmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
     }
 
     private static void openReviewFrame(DefaultTableModel model, int rowIndex, Object[] rowData) {
         JFrame reviewFrame = new JFrame("Review and Edit");
         reviewFrame.setSize(350, 300);
 
-        JPanel reviewPanel = new JPanel(new GridLayout(rowData.length + 2, 2)); // Adjusted for additional button
+        JPanel reviewPanel = new JPanel(new GridLayout(rowData.length + 2, 2));
         reviewPanel.setBackground(Color.WHITE);
         JTextField[] textFields = new JTextField[rowData.length];
 
@@ -112,16 +143,37 @@ public class EmployeeReview {
         JButton submitButton = new JButton("Submit");
         submitButton.setBackground(Color.BLUE);
         submitButton.setForeground(Color.WHITE);
-        
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < textFields.length; i++) {
-                    model.setValueAt(textFields[i].getText(), rowIndex, i);
+                try {
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/finalsoop", "root", "Rachelle");
+                    String updateQuery = "UPDATE tbl_employeereview SET request = ?, name = ?, department = ?, weeklystat = ?, rating = ?, approve = ? WHERE employeeID = ?";
+                    PreparedStatement pstmt = conn.prepareStatement(updateQuery);
+
+                    pstmt.setString(1, textFields[1].getText()); // request
+                    pstmt.setString(2, textFields[2].getText()); // name
+                    pstmt.setString(3, textFields[3].getText()); // department
+                    pstmt.setString(4, textFields[4].getText()); // weeklystat
+                    pstmt.setString(5, textFields[5].getText()); // rating
+                    pstmt.setBoolean(6, textFields[6].getText().equalsIgnoreCase("Yes")); // approve
+                    pstmt.setString(7, textFields[0].getText()); // employeeID
+
+                    pstmt.executeUpdate();
+                    pstmt.close();
+                    conn.close();
+
+                    for (int i = 0; i < textFields.length; i++) {
+                        model.setValueAt(textFields[i].getText(), rowIndex, i);
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex);
                 }
                 reviewFrame.dispose();
             }
         });
+
+
 
         JButton backButton = new JButton("Back");
         backButton.setBackground(Color.BLUE);
@@ -137,6 +189,7 @@ public class EmployeeReview {
         reviewPanel.add(submitButton);
         reviewPanel.add(backButton);
         reviewFrame.add(reviewPanel);
+        reviewFrame.setLocationRelativeTo(null);
         reviewFrame.setVisible(true);
-    }
+    } 
 }
