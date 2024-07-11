@@ -102,7 +102,6 @@ public class MainMenu extends JFrame{
         
         Acc.setLocationRelativeTo(null);
         Acc.setVisible(true);
-        
     }
     
 }

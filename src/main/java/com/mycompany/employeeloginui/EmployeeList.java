@@ -138,6 +138,7 @@ public class EmployeeList extends JFrame {
            
         employeeContainer.add(employeePanel);
         employeeContainer.revalidate();
+        
     }
 
 

@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import static java.lang.Boolean.getBoolean;
 
 public class EmployeeReview {
 
@@ -191,5 +190,6 @@ public class EmployeeReview {
         reviewFrame.add(reviewPanel);
         reviewFrame.setLocationRelativeTo(null);
         reviewFrame.setVisible(true);
+        
     } 
 }
